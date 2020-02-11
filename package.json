@@ -20,6 +20,7 @@
     "gatsby-plugin-styled-components": "^3.1.19",
     "gatsby-source-filesystem": "^2.1.46",
     "gatsby-source-firestore": "^1.0.3",
+    "gatsby-source-firestore-imp": "^1.0.1",
     "gatsby-transformer-sharp": "^2.3.13",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",

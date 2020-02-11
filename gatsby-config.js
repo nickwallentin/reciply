@@ -37,7 +37,7 @@ module.exports = {
       },
     },
     {
-      resolve: "gatsby-source-firestore",
+      resolve: "gatsby-source-firestore-imp",
       options: {
         credential: {
           type: process.env.FIREBASE_TYPE,
