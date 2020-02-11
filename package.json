@@ -6,6 +6,7 @@
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
     "babel-plugin-styled-components": "^1.10.7",
+    "convert-units": "^2.3.4",
     "firebase": "^7.8.0",
     "gatsby": "^2.19.16",
     "gatsby-image": "^2.2.39",

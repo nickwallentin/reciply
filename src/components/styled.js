@@ -20,7 +20,7 @@ export const Sec = styled.div`
     }
   }
   h1 {
-    font-size: 2rem;
+    font-size: 1.6rem;
     margin-bottom: 15px;
     @media screen and (max-width: 900px) {
       font-size: 1.4rem;
@@ -44,7 +44,7 @@ export const Sec = styled.div`
 
 export const Wrap = styled.div`
   max-width: ${props => (props.wide ? "1080px" : "900px")};
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
 `
 

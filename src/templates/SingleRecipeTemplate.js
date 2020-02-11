@@ -87,7 +87,7 @@ const SingleRecipeTemplate = ({ data }) => {
                 {recipe.ingredients.map((ingredient, ingredientIndex) => {
                   return (
                     <li key={ingredient.ingredient}>
-                      <span style={{ width: "80px" }}>
+                      <span className="amount" style={{ width: "80px" }}>
                         {ingredient.amount} {ingredient.amountType}
                       </span>{" "}
                       <span style={{ flex: "1" }}>{ingredient.ingredient}</span>
@@ -143,7 +143,8 @@ const RecipeMeta = styled.div`
       padding: 5px 8px;
       margin: 0px 2.5px;
       border-radius: 5px;
-      background: var(--c-bg);
+      background: var(--c-pri);
+      color: white;
       &:first-of-type {
         margin-left: 0px;
       }
@@ -174,6 +175,7 @@ const IngredientList = styled.ul`
   margin: 0px;
   margin-bottom: 15px;
   list-style: none;
+
   .actions {
   }
   & > li {
@@ -182,6 +184,10 @@ const IngredientList = styled.ul`
     justify-content: space-between;
     padding: 8px 6px 8px 15px;
     margin-bottom: 0px;
+    .amount {
+      font-weight: 500;
+      display: block;
+    }
 
     &:nth-child(even) {
       background: var(--c-bg-s);

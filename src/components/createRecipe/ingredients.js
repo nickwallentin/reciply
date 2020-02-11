@@ -1,5 +1,7 @@
 import React, { useState } from "react"
+import store from "store"
 import styled from "styled-components"
+import convert from "convert-units"
 
 import { Grid, Card, Button, Form } from "../styled"
 import PlusIcon from "../../assets/icons/plus.svg"
@@ -13,6 +15,16 @@ const Ingredients = ({
   servings,
   setServings,
 }) => {
+  const userData = store.get("userData")
+  const massList = convert().list("mass")
+  const volumeList = convert().list("volume")
+  const measurements = massList.concat(volumeList)
+
+  const um = measurements.filter(m => {
+    return m.system === userData.system
+  })
+  console.log(um)
+
   const [isAdding, setIsAdding] = useState(false)
   const [addingType, setIsAddingType] = useState("")
   const [inputValue, setInputValue] = useState("")
@@ -99,7 +111,7 @@ const Ingredients = ({
             {ingredients.map((ingredient, ingredientIndex) => {
               return (
                 <li key={ingredient.ingredient}>
-                  <span style={{ width: "80px" }}>
+                  <span className="amount" style={{ width: "80px" }}>
                     {ingredient.amount} {ingredient.amountType}
                   </span>{" "}
                   <span style={{ flex: "1" }}>{ingredient.ingredient}</span>
@@ -190,6 +202,7 @@ const IngredientList = styled.ul`
   margin: 0px;
   margin-bottom: 15px;
   list-style: none;
+
   .actions {
   }
   & > li {
@@ -198,6 +211,10 @@ const IngredientList = styled.ul`
     justify-content: space-between;
     padding: 8px 6px 8px 15px;
     margin-bottom: 0px;
+    .amount {
+      font-weight: 500;
+      display: block;
+    }
 
     &:nth-child(even) {
       background: var(--c-bg-s);
