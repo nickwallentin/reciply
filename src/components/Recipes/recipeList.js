@@ -50,7 +50,7 @@ const query = graphql`
           suitability
           user {
             displayName
-            measurement
+            system
           }
         }
       }
