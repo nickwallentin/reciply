@@ -12,7 +12,7 @@ body {
   --c-bg: #ffffff;
   --c-bg-s: #f8f5f2;
   --c-bg-inv: #202124;
-  --c-bg-inv-20: #ffffff20;
+  --c-bg-inv-20: #00000020;
 
   --c-border: #00000010;
 
@@ -25,7 +25,7 @@ body {
 body.dark {
   --c-bg: #1c1b1b;
   --c-bg-s: #161616;
-  --c-bg-inv-20: #1a1a1a60;
+  --c-bg-inv-20: #ffffff20;
 
   --c-border: #ffffff10;
 
@@ -678,6 +678,11 @@ strong {
   }
 }
 
-body {
-  font-size: 12px;
+h1 {
+  font-size: 2rem;
+}
+@media screen and (max-width: 900px) {
+  h1 {
+    font-size: 1.2rem;
+  }
 }

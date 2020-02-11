@@ -20,8 +20,11 @@ export const Sec = styled.div`
     }
   }
   h1 {
-    font-size: 45px;
+    font-size: 2rem;
     margin-bottom: 15px;
+    @media screen and (max-width: 900px) {
+      font-size: 1.4rem;
+    }
   }
   h2 {
     font-size: 40px;
@@ -31,16 +34,11 @@ export const Sec = styled.div`
   h4 {
     margin-bottom: 10px;
   }
-  p {
-    font-size: 16px;
-    line-height: 22px;
-    &.large {
-      font-size: 18px;
-      line-height: 24px;
-    }
-    strong {
-      color: var(--c-bg-inv);
-    }
+  h3 {
+    font-size: 1.2rem;
+  }
+  h4 {
+    font-size: 1rem;
   }
 `
 
@@ -199,6 +197,7 @@ export const Grid = styled.div`
 
   @media screen and (max-width: 800px) {
     grid-template-columns: ${props => props.mCols || "1fr"};
+    grid-gap: ${props => props.mGap || "20px"};
   }
 `
 

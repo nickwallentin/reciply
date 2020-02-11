@@ -1,54 +1,18 @@
-import React, { useState, useEffect } from "react"
-import store from "store"
-import { getFirebase } from "../../firebase/firebase"
+import React, { useState } from "react"
+
 import { Link } from "gatsby"
 import Img from "gatsby-image"
 import styled from "styled-components"
 
-import LikeIcon from "../../assets/icons/heart.svg"
-import LikedIcon from "../../assets/icons/heart-liked.svg"
-import CommentIcon from "../../assets/icons/comment.svg"
+import RecipeActions from "./recipeActions"
 
 const RecipeCard = ({ recipe }) => {
-  const firebase = getFirebase()
   const [liked, setLiked] = useState(false)
   const [likes, setLikes] = useState(recipe.likes)
-  const db = firebase.firestore()
-  const user = store.get("user")
-  const FieldValue = firebase.firestore.FieldValue
-  const increment = FieldValue.increment(1)
-  const decrement = FieldValue.increment(-1)
-
-  const likeRecipe = () => {
-    if (!liked) {
-      setLikes(prevState => prevState + 1)
-      setLiked(true)
-      db.doc("/recipes/" + recipe.id).update({
-        likes: increment,
-        likedBy: FieldValue.arrayUnion(db.doc("/users/" + user.uid)),
-      })
-    } else {
-      setLikes(prevState => prevState - 1)
-      setLiked(false)
-      db.doc("/recipes/" + recipe.id).update({
-        likes: decrement,
-        likedBy: FieldValue.arrayRemove(db.doc("/users/" + user.uid)),
-      })
-    }
-  }
-  const handleDoubleClick = () => {
-    console.log("Double clicked!")
-  }
-
-  useEffect(() => {
-    const exists = recipe.likedBy.filter(i => {
-      return i.id === user.uid
-    })
-
-    if (exists.length > 0) {
-      setLiked(true)
-    }
-  }, [])
+  const slug =
+    recipe.name.toLowerCase().replace(/\W+/g, "-") +
+    "-" +
+    recipe.created.replace(/[^0-9]+/g, "")
 
   return (
     <RecipeContainer>
@@ -62,15 +26,14 @@ const RecipeCard = ({ recipe }) => {
       <RecipeImage fluid={recipe.imageUrl.childImageSharp.fluid} />
 
       <RecipeContent>
-        <RecipeActions>
-          {liked ? (
-            <LikedIcon onClick={() => likeRecipe()} className="liked" />
-          ) : (
-            <LikeIcon onClick={() => likeRecipe()} />
-          )}
-          <CommentIcon className="comment" />
-        </RecipeActions>
-        <span className="likes">
+        <RecipeActions
+          recipe={recipe}
+          likes={likes}
+          liked={liked}
+          setLikes={setLikes}
+          setLiked={setLiked}
+        />
+        <small className="likes">
           {liked && likes > 1
             ? "You and " + (likes - 1) + " more liked this"
             : liked && likes === 1
@@ -78,14 +41,14 @@ const RecipeCard = ({ recipe }) => {
             : likes === 1
             ? likes + " like"
             : likes + " likes"}
-        </span>
-        <h4>{recipe.name}</h4>
+        </small>
+        <h3>{recipe.name}</h3>
         <p>{recipe.description}</p>
       </RecipeContent>
       <RecipeComments>
         <strong>View all 23 comments</strong>
       </RecipeComments>
-      <RecipeLink to="/">See recipe</RecipeLink>
+      <RecipeLink to={"/recipe/" + slug}>See recipe</RecipeLink>
     </RecipeContainer>
   )
 }
@@ -117,47 +80,11 @@ const RecipeHeader = styled.div`
   }
 `
 
-const RecipeActions = styled.div`
-  padding: 10px 0px;
-  border-bottom: 1px solid var(--c-border);
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-
-  svg {
-    width: 24px;
-    height: 24px;
-
-    &.liked {
-      path {
-        fill: var(--c-pri);
-      }
-    }
-
-    &:first-of-type {
-      margin-right: 15px;
-    }
-    &.comment {
-      path {
-        fill: none;
-      }
-      g {
-        stroke: var(--c-txt);
-      }
-    }
-    path {
-      fill: var(--c-txt);
-    }
-  }
-`
-
 const RecipeContent = styled.div`
   padding: 0px 20px 20px 20px;
 
   p {
     margin: 0px;
-    font-size: 14px;
-    line-height: 18px;
   }
   .likes {
     font-weight: 500;

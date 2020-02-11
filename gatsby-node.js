@@ -28,7 +28,10 @@ exports.createPages = ({ actions, graphql }) => {
     const edges = result.data.allRecipes.edges
 
     edges.forEach(edge => {
-      const slug = edge.node.name.toLowerCase().replace(/\W+/g, "-")
+      const slug =
+        edge.node.name.toLowerCase().replace(/\W+/g, "-") +
+        "-" +
+        edge.node.created.replace(/[^0-9]+/g, "")
       const id = edge.node.id
       createPage({
         path: "/recipe/" + slug,
