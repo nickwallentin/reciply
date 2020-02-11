@@ -78,7 +78,7 @@ module.exports = {
             map: doc => ({
               id: doc.id,
               displayName: doc.displayName,
-              measurement: doc.measurement,
+              system: doc.system,
             }),
           },
         ],
