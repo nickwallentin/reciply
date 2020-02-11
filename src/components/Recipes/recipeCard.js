@@ -72,7 +72,7 @@ const RecipeCard = ({ recipe }) => {
         </RecipeActions>
         <span className="likes">
           {liked && likes > 1
-            ? "You and " + likes + " more liked this"
+            ? "You and " + (likes - 1) + " more liked this"
             : liked && likes === 1
             ? "You liked this"
             : likes === 1
