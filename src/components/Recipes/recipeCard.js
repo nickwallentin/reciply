@@ -57,8 +57,8 @@ export default RecipeCard
 
 const RecipeContainer = styled.div`
   background: var(--c-bg);
-  border-radius: 5px;
-  margin-bottom: 20px;
+  border-radius: 0px;
+  margin-bottom: 10px;
 `
 
 const RecipeHeader = styled.div`

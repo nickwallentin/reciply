@@ -5,11 +5,18 @@ import Cropper from "react-easy-crop"
 import styled from "styled-components"
 import getCroppedImg from "./cropImage"
 
-import { Button } from "../styled"
+import { Button, Grid, Input, Textarea } from "../styled"
 
-import PlusIcon from "../../assets/icons/plus.svg"
+import AddImageIcon from "../../assets/icons/add-image.svg"
 
-const ImageUploader = ({ image, setImage }) => {
+const ImageUploader = ({
+  image,
+  setImage,
+  name,
+  setName,
+  description,
+  setDescription,
+}) => {
   const [file, setFile] = useState("")
   const [preview, setPreview] = useState("")
   const [croppedImage, setCroppedImage] = useState(null)
@@ -75,35 +82,49 @@ const ImageUploader = ({ image, setImage }) => {
               className="cropped-image"
               src={croppedImage}
             />
-            <Button
-              style={{ marginBottom: "15px" }}
-              full
-              cta
-              onClick={() => handleClearImage()}
-            >
-              Change image
-            </Button>
           </div>
         </React.Fragment>
       ) : (
         <UploadContainer name="image-uploader">
-          <React.Fragment>
-            <input
-              id="file-upload"
-              accept="image/*"
-              type="file"
-              style={{ display: "none" }}
-              onChange={e => handleFileSelected(e)}
-            />
-            <button onClick={e => handleSelectFile(e)} type="submit">
-              <PlusIcon />
-            </button>
-
-            <div style={{ width: "200px", margin: "0 auto" }}>
-              <h4>Upload image</h4>
-              <p>Every fantastic recipe needs a fantastic image.</p>
+          <Grid cols="100px 1fr" mCols="80px 1fr">
+            <div>
+              <input
+                id="file-upload"
+                accept="image/*"
+                type="file"
+                style={{ display: "none" }}
+                onChange={e => handleFileSelected(e)}
+              />
+              <button
+                style={{ margin: "0px" }}
+                onClick={e => handleSelectFile(e)}
+                type="submit"
+              >
+                <AddImageIcon />
+              </button>
             </div>
-          </React.Fragment>
+
+            <div>
+              <div>
+                <Input
+                  className="invisible h3"
+                  type="text"
+                  placeholder="Enter Recipe Name"
+                  style={{ marginBottom: "5px" }}
+                  autoFocus
+                  onChange={e => setName(e.target.value)}
+                />
+              </div>
+              <div>
+                <Textarea
+                  className="invisible p"
+                  placeholder="Enter a description"
+                  rows="3"
+                  onChange={e => setDescription(e.target.value)}
+                />
+              </div>
+            </div>
+          </Grid>
         </UploadContainer>
       )}
       {file && (
@@ -137,12 +158,9 @@ export default ImageUploader
 
 const UploadContainer = styled.form`
   color: var(--c-txt);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
+  max-width: 600px;
+  margin: 0 auto;
+  margin-bottom: 20px;
   .cropped-image {
     width: 250px;
     height: 250px;
@@ -157,18 +175,22 @@ const UploadContainer = styled.form`
     width: 100px;
     height: 100px;
     background: transparent;
-    border: 1px solid var(--c-txt-60);
+    border: 1px solid var(--c-icon-l);
     border-radius: 5px;
     margin-bottom: 15px;
     &:focus {
       outline: none;
     }
     svg {
-      width: 44px;
-      height: 44px;
+      width: 34px;
+      height: 34px;
       path {
-        fill: var(--c-txt-60);
+        fill: var(--c-icon-l);
       }
+    }
+    @media screen and (max-width: 800px) {
+      width: 80px;
+      height: 80px;
     }
   }
   & button:hover {

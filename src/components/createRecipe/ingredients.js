@@ -1,20 +1,19 @@
 import React, { useState } from "react"
 import store from "store"
 import styled from "styled-components"
+import posed, { PoseGroup } from "react-pose"
 import convert from "convert-units"
 
-import { Grid, Card, Button, Form } from "../styled"
-import PlusIcon from "../../assets/icons/plus.svg"
-import CloseIcon from "../../assets/icons/close.svg"
+import { Grid, Card, Button, Form, Input } from "../styled"
+import AddIcon from "../../assets/icons/add-stroke.svg"
+import ClearIcon from "../../assets/icons/clear.svg"
+import DoneIcon from "../../assets/icons/check.svg"
+import EditIcon from "../../assets/icons/edit.svg"
+import DeleteIcon from "../../assets/icons/delete.svg"
 
 import MoreIcon from "../../assets/icons/more.svg"
 
-const Ingredients = ({
-  ingredients,
-  setIngredients,
-  servings,
-  setServings,
-}) => {
+const Ingredients = ({ ingredients, setIngredients }) => {
   const userData = store.get("userData")
   const massList = convert().list("mass")
   const volumeList = convert().list("volume")
@@ -26,28 +25,33 @@ const Ingredients = ({
   console.log(um)
 
   const [isAdding, setIsAdding] = useState(false)
-  const [addingType, setIsAddingType] = useState("")
+  const [listMenu, setListMenu] = useState({ open: false, index: 0 })
   const [inputValue, setInputValue] = useState("")
   const [ingredientAmount, setIngredientAmount] = useState("")
   const [ingredientAmountType, setIngredientAmountType] = useState("")
   const [isEditing, setIsEditing] = useState(false)
+  const [editingIndex, setEditingIndex] = useState(null)
   const [ingredientIndex, setIngredientIndex] = useState(0)
 
   const resetFields = e => {
     e.preventDefault()
-    setIsAddingType("")
+    setListMenu({ open: false, index: 0 })
     setIsAdding(false)
     setInputValue("")
     setIngredientAmount("")
     setIngredientAmountType("")
     setIsEditing(false)
+    setEditingIndex(null)
   }
-
-  const handleSwitchToInput = type => {
+  const handleStartAddItem = e => {
+    setIsEditing(false)
+    setInputValue("")
+    setIngredientAmount("")
+    setIngredientAmountType("")
+    setEditingIndex(null)
     setIsAdding(true)
-    setIsAddingType(type)
+    setListMenu({ open: false, index: null })
   }
-
   const handleAddInput = e => {
     let ingredientsCopy = ingredients
     e.preventDefault()
@@ -70,23 +74,18 @@ const Ingredients = ({
     }
   }
 
-  const handleStartEditItem = (data, ingredientIndex, secIndex) => {
+  const handleStartEditItem = (event, data, ingredientIndex) => {
+    event.preventDefault()
+    resetFields(event)
+    setListMenu({ open: false, index: ingredientIndex })
     setIngredientIndex(ingredientIndex)
-
     setIsEditing(true)
-    setIsAdding(true)
-    setIsAddingType("ingredient")
+    setEditingIndex(ingredientIndex)
     setInputValue(data.ingredient)
     setIngredientAmount(data.amount)
     setIngredientAmountType(data.amountType)
   }
-  const handleUpdateServings = type => {
-    if (type === "add") {
-      setServings(prevState => prevState + 1)
-    } else if (type === "subtract") {
-      setServings(prevState => prevState - 1)
-    }
-  }
+
   const handleDeleteItem = e => {
     e.preventDefault()
     resetFields(e)
@@ -95,102 +94,192 @@ const Ingredients = ({
     setIngredients([...newState])
   }
 
+  const handleToggleListMenu = (e, iIndex) => {
+    resetFields(e)
+    if (listMenu.open && listMenu.index !== iIndex) {
+      setListMenu({
+        open: true,
+        index: iIndex,
+      })
+    } else {
+      setListMenu({
+        open: !listMenu.open,
+        index: iIndex,
+      })
+    }
+    setIngredientIndex(iIndex)
+  }
+
   return (
     <Card flexHeader>
       <div className="card-header">
         <h4>Ingredients</h4>
-        <ServingControl>
-          <span onClick={() => handleUpdateServings("subtract")}>-</span>
-          {servings} servings
-          <span onClick={() => handleUpdateServings("add")}>+</span>
-        </ServingControl>
+        {ingredients.length > 0 && (
+          <small>
+            {ingredients.length}{" "}
+            {ingredients.length > 1 ? "ingredients" : "ingredient"}
+          </small>
+        )}
       </div>
       <div className="card-content">
         {ingredients.length > 0 && (
           <IngredientList>
-            {ingredients.map((ingredient, ingredientIndex) => {
+            {ingredients.map((ingredient, iIndex) => {
               return (
-                <li key={ingredient.ingredient}>
-                  <span className="amount" style={{ width: "80px" }}>
-                    {ingredient.amount} {ingredient.amountType}
-                  </span>{" "}
-                  <span style={{ flex: "1" }}>{ingredient.ingredient}</span>
-                  <span className="actions">
-                    <span
-                      onClick={() =>
-                        handleStartEditItem(ingredient, ingredientIndex)
-                      }
-                    >
-                      <MoreIcon />
+                <React.Fragment key={JSON.stringify(ingredient)}>
+                  <li
+                    className={
+                      editingIndex === iIndex
+                        ? "hide"
+                        : ingredientIndex === iIndex && listMenu.open
+                        ? "menu-open"
+                        : null
+                    }
+                  >
+                    <span className="amount">
+                      {ingredient.amount} {ingredient.amountType}
+                    </span>{" "}
+                    <span style={{ flex: "1" }}>{ingredient.ingredient}</span>
+                    <span className="actions">
+                      <span
+                        onClick={e => {
+                          handleToggleListMenu(e, iIndex)
+                        }}
+                      >
+                        <MoreIcon />
+                      </span>
                     </span>
-                  </span>
-                </li>
+                  </li>
+
+                  {isEditing && ingredientIndex === iIndex ? (
+                    <IngredientEdit
+                      className={
+                        iIndex === 0
+                          ? "first"
+                          : ingredients.length - 1 === iIndex
+                          ? "last"
+                          : null
+                      }
+                      name="Add ingredient"
+                    >
+                      <div className="input-fields">
+                        <div className="amount">
+                          <Input
+                            invisible
+                            type="number"
+                            placeholder="200"
+                            autoFocus
+                            min="1"
+                            max="999"
+                            value={ingredientAmount}
+                            onChange={e => setIngredientAmount(e.target.value)}
+                          />
+                          <Input
+                            invisible
+                            type="text"
+                            placeholder="g"
+                            value={ingredientAmountType}
+                            onChange={e =>
+                              setIngredientAmountType(e.target.value)
+                            }
+                          />
+                        </div>
+                        <div className="ingredient-name">
+                          <Input
+                            type="text"
+                            placeholder="Egg Plant"
+                            value={inputValue}
+                            onChange={e => setInputValue(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <IngredientOptions pose={inputValue ? "enter" : "exit"}>
+                        <button onClick={e => handleAddInput(e)} type="submit">
+                          <DoneIcon />
+                          Done
+                        </button>
+                        <button onClick={e => resetFields(e)}>
+                          <ClearIcon />
+                          Cancel
+                        </button>
+                      </IngredientOptions>
+                    </IngredientEdit>
+                  ) : null}
+                  {listMenu.open && listMenu.index === iIndex ? (
+                    <IngredientEdit name="Add ingredient">
+                      <IngredientOptions>
+                        <button
+                          onClick={e =>
+                            handleStartEditItem(e, ingredient, iIndex)
+                          }
+                          type="submit"
+                        >
+                          <EditIcon />
+                          Edit
+                        </button>
+
+                        <button onClick={e => handleDeleteItem(e)}>
+                          <DeleteIcon />
+                          Delete
+                        </button>
+                      </IngredientOptions>
+                    </IngredientEdit>
+                  ) : null}
+                </React.Fragment>
               )
             })}
           </IngredientList>
         )}
-        <Grid>
-          {!isAdding ? (
-            <React.Fragment>
-              <Button onClick={() => handleSwitchToInput("ingredient")}>
-                <PlusIcon /> Ingredient
-              </Button>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <Form style={{ marginTop: "20px" }}>
-                <div className="input-group">
-                  <input
-                    onChange={e => setInputValue(e.target.value)}
-                    value={inputValue}
-                    placeholder={
-                      addingType === "section"
-                        ? 'Add section ex. "Dressing"'
-                        : "Add ingredient"
-                    }
-                    type="text"
-                  />
-                </div>
-                {addingType === "ingredient" && (
-                  <div
-                    style={{ marginTop: "10px" }}
-                    className="input-group double"
-                  >
-                    <input
-                      onChange={e => setIngredientAmount(e.target.value)}
-                      value={ingredientAmount}
-                      type="number"
-                      placeholder="200"
-                    />
-                    <input
-                      onChange={e => setIngredientAmountType(e.target.value)}
-                      value={ingredientAmountType}
-                      type="text"
-                      placeholder="g"
-                    />
-                  </div>
-                )}
-                <Grid cols="1fr 1fr" mCols="1fr 1fr" gap="10px">
-                  <Button full onClick={e => resetFields(e)}>
-                    Cancel
-                  </Button>
-                  <Button full cta onClick={e => handleAddInput(e)}>
-                    {isEditing ? "Update" : "Add"}
-                  </Button>
-                </Grid>
-                {isEditing && (
-                  <Button
-                    style={{ marginTop: "10px" }}
-                    full
-                    onClick={e => handleDeleteItem(e)}
-                  >
-                    <CloseIcon /> Delete
-                  </Button>
-                )}
-              </Form>
-            </React.Fragment>
-          )}
-        </Grid>
+        {isAdding && (
+          <IngredientEdit name="Add ingredient">
+            <div className="input-fields">
+              <div className="amount">
+                <Input
+                  invisible
+                  type="number"
+                  placeholder="200"
+                  autoFocus
+                  min="1"
+                  max="999"
+                  value={ingredientAmount}
+                  onChange={e => setIngredientAmount(e.target.value)}
+                />
+                <Input
+                  invisible
+                  type="text"
+                  placeholder="g"
+                  value={ingredientAmountType}
+                  onChange={e => setIngredientAmountType(e.target.value)}
+                />
+              </div>
+              <div className="ingredient-name">
+                <Input
+                  type="text"
+                  placeholder="Egg Plant"
+                  value={inputValue}
+                  onChange={e => setInputValue(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <IngredientOptions pose={inputValue ? "enter" : "exit"}>
+              <button onClick={e => handleAddInput(e)} type="submit">
+                <DoneIcon />
+                Done
+              </button>
+              <button onClick={e => resetFields(e)}>
+                <ClearIcon />
+                Cancel
+              </button>
+            </IngredientOptions>
+          </IngredientEdit>
+        )}
+      </div>
+      <div className="card-footer" style={{ padding: "5px" }}>
+        <Button full invisible onClick={() => handleStartAddItem()}>
+          <AddIcon /> Ingredient
+        </Button>
       </div>
     </Card>
   )
@@ -200,24 +289,56 @@ export default Ingredients
 
 const IngredientList = styled.ul`
   margin: 0px;
-  margin-bottom: 15px;
+
   list-style: none;
 
   .actions {
   }
+  & > form {
+    &:first-of-type {
+      padding-top: 0px;
+    }
+    &:last-of-type {
+      padding-bottom: 0px;
+    }
+  }
   & > li {
-    font-weight: 300;
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 6px 8px 15px;
+    font-weight: 500;
+    display: grid;
+    grid-template-columns: 75px 1fr 20px;
+    padding: 10px 0px;
     margin-bottom: 0px;
-    .amount {
-      font-weight: 500;
-      display: block;
+    border-bottom: 1px dotted var(--c-border);
+
+    &.hide {
+      display: none;
     }
 
-    &:nth-child(even) {
-      background: var(--c-bg-s);
+    &:first-of-type {
+      padding-top: 0px;
+    }
+    &:last-of-type {
+      padding-bottom: 0px;
+    }
+    &.menu-open {
+      padding-bottom: 10px;
+    }
+    .amount {
+      font-weight: 300;
+      color: var(--c-pri);
+    }
+
+    &:last-of-type,
+    &.menu-open {
+      border-bottom: none;
+    }
+
+    &.menu-open {
+      svg {
+        path {
+          fill: var(--c-pri);
+        }
+      }
     }
 
     span {
@@ -233,21 +354,65 @@ const IngredientList = styled.ul`
     }
   }
 `
-const ServingControl = styled.div`
-  display: flex;
-  align-items: center;
+const IngredientEdit = styled.form`
+  margin-bottom: 0px;
+  &.first {
+    .input-fields {
+      padding-top: 0px;
+    }
+  }
+  &.last {
+    .input-fields {
+      padding-bottom: 10px;
+    }
+  }
+  .input-fields {
+    display: grid;
+    grid-template-columns: 75px 1fr;
+    margin: 0px;
+    padding: 10px 0px;
 
-  span {
-    padding: 5px;
-    font-weight: 500;
-    cursor: pointer;
-    width: 25px;
-    height: 25px;
+    input {
+      margin: 0px !important;
+      padding: 0px;
+      border: 0px;
+    }
+  }
+
+  div.amount {
     display: flex;
-    justify-content: center;
+  }
+  div.ingredient-name {
+    flex: 1;
+    font-weight: 500;
+  }
+`
+const IngredientOptions = styled.div`
+  background: var(--c-txt);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-evenly;
+  color: var(--c-txt-inv);
+  font-weight: 500;
+  font-size: 0.9rem;
+  line-height: 0.7rem;
+  margin-top: 0px;
+  padding: 0px;
+  svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    path {
+      fill: var(--c-icon-d);
+    }
+  }
+  button {
+    color: var(--c-txt-inv);
+    display: flex;
     align-items: center;
-    border: 1px solid var(--c-border);
-    margin: 0px 10px;
-    border-radius: 3px;
+    padding: 10px;
+    background: transparent;
+    border: none;
   }
 `

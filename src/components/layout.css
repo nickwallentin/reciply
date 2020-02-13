@@ -10,18 +10,19 @@ body {
 
   /* Colors */
   --c-bg: #ffffff;
-  --c-bg-s: #f8f5f2;
-  --c-bg-inv: #202124;
-  --c-bg-inv-20: #00000020;
+  --c-bg-s: #f5f4f9;
 
-  --c-border: #00000010;
+  --c-border: #cbcbd1;
 
-  --c-red: #fe4c42;
-  --c-pri: #3cd884;
+  --c-pri: #32d88e;
+  --c-pri-soft: #d3f2e4;
 
-  --c-txt: #000000;
-  --c-txt-60: #666666;
-  --c-txt-40: #c2c2c2;
+  --c-txt: #393b49;
+  --c-txt-soft: #9b9ca3;
+  --c-txt-inv: #fcfbff;
+
+  --c-icon-l: #cbcbd1;
+  --c-icon-d: #9b9ca3;
 }
 body.dark {
   --c-bg: #1c1b1b;

@@ -9,7 +9,7 @@ import ImageUploader from "../../components/createRecipe/imageUploader"
 import Ingredients from "../../components/createRecipe/ingredients"
 import Steps from "../../components/createRecipe/steps"
 import Suitability from "../../components/createRecipe/suitability"
-import Meta from "../../components/createRecipe/meta"
+import ServingsTime from "../../components/createRecipe/servingsTime"
 
 const CreateRecipePage = () => {
   const [image, setImage] = useState(null)
@@ -27,13 +27,29 @@ const CreateRecipePage = () => {
         <SEO title="Create new recipe" />
         <Sec>
           <Wrap>
-            <ImageUploader setImage={setImage} />
+            <ImageUploader
+              setImage={setImage}
+              name={name}
+              setName={setName}
+              description={description}
+              setDescription={setDescription}
+            />
+
+            <ServingsTime
+              servings={servings}
+              setServings={setServings}
+              cookingTime={cookingTime}
+              setCookingTime={setCookingTime}
+            />
+          </Wrap>
+          <Wrap full>
             <Ingredients
               ingredients={ingredients}
               setIngredients={setIngredients}
               servings={servings}
               setServings={setServings}
             />
+
             <Steps
               instructions={instructions}
               setInstructions={setInstructions}
@@ -43,18 +59,6 @@ const CreateRecipePage = () => {
             <Suitability
               suitability={suitability}
               setSuitability={setSuitability}
-            />
-            <Meta
-              name={name}
-              setName={setName}
-              description={description}
-              setDescription={setDescription}
-              image={image}
-              servings={servings}
-              ingredients={ingredients}
-              instructions={instructions}
-              suitability={suitability}
-              cookingTime={cookingTime}
             />
           </Wrap>
         </Sec>

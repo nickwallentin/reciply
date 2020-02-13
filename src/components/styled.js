@@ -44,7 +44,7 @@ export const Sec = styled.div`
 
 export const Wrap = styled.div`
   max-width: ${props => (props.wide ? "1080px" : "900px")};
-  width: 100%;
+  width: ${props => (props.full ? "100%" : "90%")};
   margin: 0 auto;
 `
 
@@ -211,10 +211,14 @@ export const Button = styled.button`
   width: ${props => (props.full ? "100%" : "inherit")};
   text-align: center;
   color: ${props =>
-    props.border ? "var(--c-bg-inv)" : props.cta ? "white" : "var(--c-txt)"};
-  background: ${props =>
     props.border
-      ? "var(--c-bg-s)"
+      ? "var(--c-bg-inv)"
+      : props.cta
+      ? "white"
+      : "var(--c-txt-soft)"};
+  background: ${props =>
+    props.invisible
+      ? "transparent"
       : props.cta
       ? "var(--c-pri)"
       : "var(--c-bg-s)"};
@@ -231,7 +235,7 @@ export const Button = styled.button`
     align-items: center;
     justify-content: center;
     path {
-      fill: var(--c-txt);
+      fill: var(--c-icon-l);
     }
   }
 
@@ -257,5 +261,48 @@ export const Blurb = styled.div`
       border-radius: 99px;
       margin-left: 10px;
     }
+  }
+`
+
+export const Input = styled.input`
+  outline: none;
+  color: var(--c-txt);
+  width: 100%;
+  &::placeholder {
+    color: var(--c-txt-soft);
+  }
+  &.invisible {
+    background: transparent;
+    border: none;
+  }
+  &.h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+  &.p {
+    font-size: 0.9rem;
+  }
+`
+
+export const Textarea = styled.textarea`
+  outline: none;
+  color: var(--c-txt);
+  resize: none;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  &::placeholder {
+    color: var(--c-txt-soft);
+  }
+  &.invisible {
+    background: transparent;
+    border: none;
+  }
+  &.h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+  &.p {
+    font-size: 0.9rem;
+    line-height: 1.1rem;
   }
 `
