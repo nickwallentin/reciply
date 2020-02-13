@@ -48,6 +48,8 @@ const ImageUploader = ({
       xhr.onload = function(e) {
         if (this.status == 200) {
           var myBlob = this.response
+          var newPreview = URL.createObjectURL(myBlob)
+          setPreview(newPreview)
           setImage(myBlob)
         }
       }
