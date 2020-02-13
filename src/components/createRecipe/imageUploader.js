@@ -1,7 +1,5 @@
 import React, { useState, useCallback } from "react"
-import heic2any from "heic2any"
-import ReactDOM from "react-dom"
-import { getFirebase } from "../../firebase/firebase"
+import Slider from "@material-ui/core/Slider"
 import Cropper from "react-easy-crop"
 import styled from "styled-components"
 import getCroppedImg from "./cropImage"
@@ -9,6 +7,8 @@ import getCroppedImg from "./cropImage"
 import { Button, Grid, Input, Textarea } from "../styled"
 
 import AddImageIcon from "../../assets/icons/add-image.svg"
+import DoneIcon from "../../assets/icons/check.svg"
+import CancelIcon from "../../assets/icons/clear.svg"
 
 const ImageUploader = ({
   image,
@@ -80,6 +80,7 @@ const ImageUploader = ({
             {croppedImage ? (
               <div className="image-preview">
                 <img
+                  onClick={e => handleSelectFile(e)}
                   style={{ borderRadius: "5px", height: "80px" }}
                   className="cropped-image"
                   src={croppedImage}
@@ -87,13 +88,6 @@ const ImageUploader = ({
               </div>
             ) : (
               <React.Fragment>
-                <input
-                  id="file-upload"
-                  accept="image/*"
-                  type="file"
-                  style={{ display: "none" }}
-                  onChange={e => handleFileSelected(e)}
-                />
                 <button
                   style={{ margin: "0px" }}
                   onClick={e => handleSelectFile(e)}
@@ -103,6 +97,13 @@ const ImageUploader = ({
                 </button>
               </React.Fragment>
             )}
+            <input
+              id="file-upload"
+              accept="image/*"
+              type="file"
+              style={{ display: "none" }}
+              onChange={e => handleFileSelected(e)}
+            />
           </div>
 
           <div>
@@ -130,7 +131,7 @@ const ImageUploader = ({
 
       {file && (
         <ImageManipulator>
-          <div className="wrapper">
+          <div className="image-area">
             <Cropper
               image={preview}
               crop={crop}
@@ -140,14 +141,29 @@ const ImageUploader = ({
               onCropComplete={onCropComplete}
               onZoomChange={setZoom}
             />
-            <div className="actions">
-              <Button onClick={() => handleClearImage()} full>
-                Cancel
-              </Button>
-              <Button onClick={showCroppedImage} full cta>
-                Pick Image
-              </Button>
-            </div>
+          </div>
+          <Slider
+            className="zoom"
+            min={10}
+            max={100}
+            onChange={(e, v) => setZoom(v / 10)}
+          />
+          <div className="actions">
+            <Button
+              onClick={() => handleClearImage()}
+              full
+              style={{ background: "transparent" }}
+            >
+              <CancelIcon />
+              Cancel
+            </Button>
+            <Button
+              onClick={showCroppedImage}
+              full
+              style={{ background: "transparent" }}
+            >
+              <DoneIcon /> Done
+            </Button>
           </div>
         </ImageManipulator>
       )}
@@ -210,20 +226,29 @@ const ImageManipulator = styled.div`
   position: fixed;
   width: 100vw;
   height: 100vh;
-  background: black;
-  .wrapper {
+  background: var(--c-bg-d);
+  .image-area {
     position: relative;
     width: 100%;
-    height: 100%;
-
-    .actions {
-      padding: 20px;
-      position: fixed;
-      bottom: 0px;
-      width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-gap: 10px;
-    }
+    height: 100vh;
+  }
+  .zoom {
+    position: fixed;
+    top: 20px;
+    width: calc(100% - 40px);
+    margin: 20px;
+  }
+  .actions {
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 11;
+    margin: 20px;
+    position: fixed;
+    bottom: 0px;
+    width: calc(100% - 40px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    background: var(--c-bg-d);
   }
 `

@@ -46,7 +46,7 @@ const Suitability = ({ suitability, setSuitability }) => {
                 suitability.includes(item) ? "checkbox checked" : "checkbox"
               }
             >
-              {item}{" "}
+              {item.replace("-", " ")}{" "}
               {suitability.includes(item) ? <CheckedIcon /> : <UncheckedIcon />}
             </div>
           ))}
@@ -65,13 +65,14 @@ const SuitabilityList = styled.div`
     align-items: center;
     font-weight: 500;
     padding: 10px 20px;
-
+    text-transform: capitalize;
     margin: 0px;
+    border-top: 1px solid var(--c-bg);
 
     &.checked {
       background: var(--c-pri-soft);
       color: var(--c-pri);
-      border-top: 1px solid var(--c-bg);
+
       &:first-of-type {
         border-top: 0px;
       }
