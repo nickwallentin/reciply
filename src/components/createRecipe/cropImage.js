@@ -22,7 +22,7 @@ export default async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
   const canvas = document.createElement("canvas")
   const ctx = canvas.getContext("2d")
 
-  let maxSize = Math.max(image.width, image.height)
+  let maxSize = Math.max(image.width / 2, image.height / 2)
   const safeArea = 2 * ((maxSize / 2) * Math.sqrt(2))
 
   // set each dimensions to double largest dimension to allow for a safe area for the
@@ -55,16 +55,12 @@ export default async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
   )
 
   // As Base64 string
-  // return canvas.toDataURL('image/jpeg');
+  //  const imgUrl = canvas.toDataURL("image/jpeg")
 
   // As a blob
   return new Promise(resolve => {
-    canvas.toBlob(
-      file => {
-        resolve(URL.createObjectURL(file))
-      },
-      "image/jpeg",
-      0.8
-    )
+    canvas.toBlob(file => {
+      resolve(URL.createObjectURL(file))
+    }, "image/jpeg")
   })
 }

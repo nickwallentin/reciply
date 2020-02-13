@@ -41,6 +41,7 @@ const ImageUploader = ({
     try {
       const croppedImage = await getCroppedImg(preview, croppedAreaPixels)
       console.log("done", { croppedImage })
+
       setCroppedImage(croppedImage)
       var xhr = new XMLHttpRequest()
       xhr.open("GET", croppedImage, true)
@@ -48,8 +49,6 @@ const ImageUploader = ({
       xhr.onload = function(e) {
         if (this.status == 200) {
           var myBlob = this.response
-          var newPreview = URL.createObjectURL(myBlob)
-          setPreview(newPreview)
           setImage(myBlob)
         }
       }
@@ -140,6 +139,7 @@ const ImageUploader = ({
               onCropChange={setCrop}
               onCropComplete={onCropComplete}
               onZoomChange={setZoom}
+              style={{ width: "1000px", height: "1000px" }}
             />
           </div>
           <Slider

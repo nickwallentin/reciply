@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import store from "store"
 import styled from "styled-components"
+
 import posed, { PoseGroup } from "react-pose"
 import convert from "convert-units"
 
@@ -22,7 +23,6 @@ const Ingredients = ({ ingredients, setIngredients }) => {
   const um = measurements.filter(m => {
     return m.system === userData.system
   })
-  console.log(um)
 
   const [isAdding, setIsAdding] = useState(false)
   const [listMenu, setListMenu] = useState({ open: false, index: 0 })
@@ -180,7 +180,9 @@ const Ingredients = ({ ingredients, setIngredients }) => {
                             placeholder="g"
                             value={ingredientAmountType}
                             onChange={e =>
-                              setIngredientAmountType(e.target.value)
+                              setIngredientAmountType(
+                                e.target.value.toLowerCase()
+                              )
                             }
                           />
                         </div>
@@ -253,7 +255,9 @@ const Ingredients = ({ ingredients, setIngredients }) => {
                   type="text"
                   placeholder="g"
                   value={ingredientAmountType}
-                  onChange={e => setIngredientAmountType(e.target.value)}
+                  onChange={e =>
+                    setIngredientAmountType(e.target.value.toLowerCase())
+                  }
                 />
               </div>
               <div className="ingredient-name">
