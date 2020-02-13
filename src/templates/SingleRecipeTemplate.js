@@ -100,25 +100,25 @@ const SingleRecipeTemplate = ({ data }) => {
           </Card>
           <Card>
             <div className="card-header">
-              <h4>Instructions</h4>
+              <h4>Steps</h4>
             </div>
             <div className="card-content">
-              <InstructionsList>
-                {recipe.instructions.map((instruction, index) => (
+              <StepsList>
+                {recipe.steps.map((step, index) => (
                   <li
                     className={
-                      finishedSteps.includes(instruction) ? "completed" : null
+                      finishedSteps.includes(step) ? "completed" : null
                     }
-                    onClick={() => handleMarkStepComplete(instruction)}
-                    key={instruction + index}
+                    onClick={() => handleMarkStepComplete(step)}
+                    key={step + index}
                   >
                     <div className="checkmark">
-                      {finishedSteps.includes(instruction) && <CheckIcon />}
+                      {finishedSteps.includes(step) && <CheckIcon />}
                     </div>
-                    <div>{instruction}</div>
+                    <div>{step}</div>
                   </li>
                 ))}
-              </InstructionsList>
+              </StepsList>
             </div>
           </Card>
         </Wrap>
@@ -207,7 +207,7 @@ const IngredientList = styled.ul`
   }
 `
 
-const InstructionsList = styled.ol`
+const StepsList = styled.ol`
   list-style: none;
   margin: 0;
   li {
@@ -273,7 +273,7 @@ export const pageQuery = graphql`
         id
       }
       likes
-      measurementOrigin
+      system
       user {
         displayName
         id
