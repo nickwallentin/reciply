@@ -295,6 +295,7 @@ export const Textarea = styled.textarea`
   resize: none;
   min-width: 100% !important;
   max-width: 100% !important;
+
   &::placeholder {
     color: var(--c-txt-soft);
   }
