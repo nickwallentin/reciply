@@ -139,7 +139,6 @@ export const Card = styled.div`
   border-radius: 5px;
   color: var(--c-txt);
   & > div {
-    padding: 20px;
   }
 
   margin-bottom: 15px;
@@ -151,13 +150,18 @@ export const Card = styled.div`
     border-bottom: 1px solid var(--c-bg-s);
     display: flex;
     align-items: center;
+    padding: ${props => props.hSpace || "20px"};
     justify-content: ${props =>
       props.flexHeader ? "space-between" : "inherit"};
     h4 {
       margin-bottom: 0px;
     }
+    small {
+      color: var(--c-txt-soft);
+    }
   }
   .card-content {
+    padding: ${props => props.cSpace || "20px"};
     .separator {
       margin: 15px 0px;
       text-align: center;
@@ -185,6 +189,7 @@ export const Card = styled.div`
     }
   }
   .card-footer {
+    padding: ${props => props.fSpace || "20px"};
     text-align: center;
     border-top: 1px solid var(--c-bg-s);
   }

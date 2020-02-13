@@ -3,7 +3,7 @@ import styled from "styled-components"
 
 import { Grid, Card, Form, Button } from "../../components/styled"
 
-import AddIcon from "../../assets/icons/plus.svg"
+import AddIcon from "../../assets/icons/add-stroke.svg"
 
 const Steps = ({
   instructions,
@@ -37,19 +37,18 @@ const Steps = ({
   return (
     <Card flexHeader>
       <div className="card-header">
-        <h4>Instructions</h4>
-
-        <ServingControl>
-          <span onClick={() => handleUpdateCookingTime("subtract")}>-</span>
-          {cookingTime} minutes
-          <span onClick={() => handleUpdateCookingTime("add")}>+</span>
-        </ServingControl>
+        <h4>Steps</h4>
+        {instructions.length > 0 && (
+          <small>
+            {instructions.length} {instructions.length > 1 ? "steps" : "step"}
+          </small>
+        )}
       </div>
       <div className="card-content">
         <InstructionsList>
           {instructions.map((instruction, index) => (
             <li key={instruction + index}>
-              <span>{index + 1}</span>
+              <span>Step {index + 1}</span>
               {instruction}
             </li>
           ))}
@@ -76,12 +75,11 @@ const Steps = ({
             </Grid>
           </Form>
         )}
-
-        {!isAdding && (
-          <Button onClick={() => setIsAdding(true)} full>
-            <AddIcon /> Instruction
-          </Button>
-        )}
+      </div>
+      <div className="card-footer" style={{ padding: "5px" }}>
+        <Button full invisible onClick={() => setIsAdding(true)}>
+          <AddIcon /> Step
+        </Button>
       </div>
     </Card>
   )
@@ -92,34 +90,20 @@ export default Steps
 const InstructionsList = styled.ol`
   list-style: none;
   margin: 0;
+
   li {
-    padding: 8px 6px 8px 15px;
-    display: grid;
-    grid-template-columns: 25px 1fr;
+    padding: 10px;
+    background: var(--c-bg-s);
+    border-radius: 5px;
+
     &:nth-child(even) {
       background: var(--c-bg-s);
     }
     span {
-      margin-right: 20px;
+      margin-bottom: 5px;
       font-weight: 500;
+      display: block;
+      color: var(--c-pri);
     }
-  }
-`
-const ServingControl = styled.div`
-  display: flex;
-  align-items: center;
-
-  span {
-    padding: 5px;
-    font-weight: 500;
-    cursor: pointer;
-    width: 25px;
-    height: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid var(--c-border);
-    margin: 0px 10px;
-    border-radius: 3px;
   }
 `

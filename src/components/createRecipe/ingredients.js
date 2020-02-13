@@ -111,7 +111,7 @@ const Ingredients = ({ ingredients, setIngredients }) => {
   }
 
   return (
-    <Card flexHeader>
+    <Card flexHeader cSpace="0px">
       <div className="card-header">
         <h4>Ingredients</h4>
         {ingredients.length > 0 && (
@@ -232,7 +232,10 @@ const Ingredients = ({ ingredients, setIngredients }) => {
           </IngredientList>
         )}
         {isAdding && (
-          <IngredientEdit name="Add ingredient">
+          <IngredientEdit
+            className={isAdding ? "is-adding" : null}
+            name="Add ingredient"
+          >
             <div className="input-fields">
               <div className="amount">
                 <Input
@@ -306,31 +309,21 @@ const IngredientList = styled.ul`
     font-weight: 500;
     display: grid;
     grid-template-columns: 75px 1fr 20px;
-    padding: 10px 0px;
+    padding: 20px;
     margin-bottom: 0px;
-    border-bottom: 1px dotted var(--c-border);
+    border-top: 1px dotted var(--c-border);
 
     &.hide {
       display: none;
     }
 
-    &:first-of-type {
-      padding-top: 0px;
-    }
-    &:last-of-type {
-      padding-bottom: 0px;
-    }
-    &.menu-open {
-      padding-bottom: 10px;
-    }
     .amount {
       font-weight: 300;
       color: var(--c-pri);
     }
 
-    &:last-of-type,
-    &.menu-open {
-      border-bottom: none;
+    &:first-of-type {
+      border-top: none;
     }
 
     &.menu-open {
@@ -356,6 +349,13 @@ const IngredientList = styled.ul`
 `
 const IngredientEdit = styled.form`
   margin-bottom: 0px;
+
+  margin-bottom: 20px;
+
+  &.is-adding {
+    border-top: 1px dotted var(--c-border);
+  }
+
   &.first {
     .input-fields {
       padding-top: 0px;
@@ -370,12 +370,13 @@ const IngredientEdit = styled.form`
     display: grid;
     grid-template-columns: 75px 1fr;
     margin: 0px;
-    padding: 10px 0px;
+    padding: 20px;
 
     input {
       margin: 0px !important;
       padding: 0px;
       border: 0px;
+      background: transparent;
     }
   }
 
@@ -388,7 +389,8 @@ const IngredientEdit = styled.form`
   }
 `
 const IngredientOptions = styled.div`
-  background: var(--c-txt);
+  margin: 0px 20px;
+  background: var(--c-bg-d);
   border-radius: 5px;
   display: flex;
   flex-direction: row-reverse;
