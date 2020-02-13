@@ -72,62 +72,60 @@ const ImageUploader = ({
 
   return (
     <React.Fragment>
-      {croppedImage ? (
-        <React.Fragment>
-          <div
-            style={{ width: "200px", margin: "0 auto" }}
-            className="image-preview"
-          >
-            <img
-              style={{ borderRadius: "5px" }}
-              className="cropped-image"
-              src={croppedImage}
-            />
+      <UploadContainer name="image-uploader">
+        <Grid cols="100px 1fr" mCols="80px 1fr">
+          <div>
+            {croppedImage ? (
+              <div className="image-preview">
+                <img
+                  style={{ borderRadius: "5px", height: "80px" }}
+                  className="cropped-image"
+                  src={croppedImage}
+                />
+              </div>
+            ) : (
+              <React.Fragment>
+                <input
+                  id="file-upload"
+                  accept="image/*"
+                  type="file"
+                  style={{ display: "none" }}
+                  onChange={e => handleFileSelected(e)}
+                />
+                <button
+                  style={{ margin: "0px" }}
+                  onClick={e => handleSelectFile(e)}
+                  type="submit"
+                >
+                  <AddImageIcon />
+                </button>
+              </React.Fragment>
+            )}
           </div>
-        </React.Fragment>
-      ) : (
-        <UploadContainer name="image-uploader">
-          <Grid cols="100px 1fr" mCols="80px 1fr">
-            <div>
-              <input
-                id="file-upload"
-                accept="image/*"
-                type="file"
-                style={{ display: "none" }}
-                onChange={e => handleFileSelected(e)}
-              />
-              <button
-                style={{ margin: "0px" }}
-                onClick={e => handleSelectFile(e)}
-                type="submit"
-              >
-                <AddImageIcon />
-              </button>
-            </div>
 
+          <div>
             <div>
-              <div>
-                <Input
-                  className="invisible h3"
-                  type="text"
-                  placeholder="Enter Recipe Name"
-                  style={{ marginBottom: "5px" }}
-                  autoFocus
-                  onChange={e => setName(e.target.value)}
-                />
-              </div>
-              <div>
-                <Textarea
-                  className="invisible p"
-                  placeholder="Enter a description"
-                  rows="3"
-                  onChange={e => setDescription(e.target.value)}
-                />
-              </div>
+              <Input
+                className="invisible h3"
+                type="text"
+                placeholder="Enter Recipe Name"
+                style={{ marginBottom: "5px" }}
+                autoFocus
+                onChange={e => setName(e.target.value)}
+              />
             </div>
-          </Grid>
-        </UploadContainer>
-      )}
+            <div>
+              <Textarea
+                className="invisible p"
+                placeholder="Enter a description"
+                rows="3"
+                onChange={e => setDescription(e.target.value)}
+              />
+            </div>
+          </div>
+        </Grid>
+      </UploadContainer>
+
       {file && (
         <ImageManipulator>
           <div className="wrapper">
