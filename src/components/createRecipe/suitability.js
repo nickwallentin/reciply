@@ -3,7 +3,8 @@ import styled from "styled-components"
 
 import { Card } from "../styled"
 
-import CheckIcon from "../../assets/icons/check.svg"
+import CheckedIcon from "../../assets/icons/radio-checked.svg"
+import UncheckedIcon from "../../assets/icons/radio-unchecked.svg"
 
 const Suitability = ({ suitability, setSuitability }) => {
   const listItems = [
@@ -13,7 +14,7 @@ const Suitability = ({ suitability, setSuitability }) => {
     "lactose-free",
     "soy-free",
     "paleo",
-    "lchf",
+    "low carb, high fat",
   ]
   const handleAddItem = value => {
     var exists = suitability.includes(value)
@@ -30,9 +31,10 @@ const Suitability = ({ suitability, setSuitability }) => {
     }
   }
   return (
-    <Card>
+    <Card flexHeader cSpace="0px">
       <div className="card-header">
         <h4>Suitability</h4>
+        {suitability.length > 0 && <small>{suitability.length} checked</small>}
       </div>
       <div className="card-content">
         <SuitabilityList>
@@ -44,7 +46,8 @@ const Suitability = ({ suitability, setSuitability }) => {
                 suitability.includes(item) ? "checkbox checked" : "checkbox"
               }
             >
-              <span>{suitability.includes(item) && <CheckIcon />}</span> {item}
+              {item}{" "}
+              {suitability.includes(item) ? <CheckedIcon /> : <UncheckedIcon />}
             </div>
           ))}
         </SuitabilityList>
@@ -56,39 +59,34 @@ const Suitability = ({ suitability, setSuitability }) => {
 export default Suitability
 
 const SuitabilityList = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  .checkbox {
+  & > div {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    cursor: pointer;
-    margin-bottom: 15px;
-    text-transform: capitalize;
+    font-weight: 500;
+    padding: 10px 20px;
+
+    margin: 0px;
 
     &.checked {
-      span {
-        background: var(--c-pri);
-        border-color: var(--c-pri);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      background: var(--c-pri-soft);
+      color: var(--c-pri);
+      border-top: 1px solid var(--c-bg);
+      &:first-of-type {
+        border-top: 0px;
+      }
 
-        svg {
-          path {
-            fill: #ffffff;
-          }
+      svg {
+        path {
+          fill: var(--c-pri);
         }
       }
     }
-    span {
-      display: block;
-      width: 30px;
-      height: 30px;
-      background: var(--c-bg-s);
-      border: 1px solid var(--c-border);
-      border-radius: 5px;
-      margin-right: 10px;
+
+    svg {
+      path {
+        fill: var(--c-icon-l);
+      }
     }
   }
 `

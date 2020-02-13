@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react"
+import heic2any from "heic2any"
 import ReactDOM from "react-dom"
 import { getFirebase } from "../../firebase/firebase"
 import Cropper from "react-easy-crop"
@@ -40,13 +41,20 @@ const ImageUploader = ({
     try {
       const croppedImage = await getCroppedImg(preview, croppedAreaPixels)
       console.log("done", { croppedImage })
-      setCroppedImage(croppedImage)
+
       var xhr = new XMLHttpRequest()
       xhr.open("GET", croppedImage, true)
       xhr.responseType = "blob"
       xhr.onload = function(e) {
         if (this.status == 200) {
           var myBlob = this.response
+          heic2any({
+            blob: myBlob,
+            toType: "image/jpeg",
+            quality: 0.8,
+          })
+          var previewImage = URL.createObjectURL(myBlob)
+          setCroppedImage(previewImage)
           setImage(myBlob)
         }
       }

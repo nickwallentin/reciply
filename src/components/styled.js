@@ -215,12 +215,7 @@ export const Button = styled.button`
   align-items: center;
   width: ${props => (props.full ? "100%" : "inherit")};
   text-align: center;
-  color: ${props =>
-    props.border
-      ? "var(--c-bg-inv)"
-      : props.cta
-      ? "white"
-      : "var(--c-txt-soft)"};
+  color: ${props => (props.cta ? "white" : "var(--c-txt-soft)")};
   background: ${props =>
     props.invisible
       ? "transparent"
@@ -230,7 +225,7 @@ export const Button = styled.button`
   border-radius: 5px;
   font-weight: ${props => (props.cta ? "900" : "500")};
   border: ${props => (props.border ? "2px solid var(--c-txt)" : "none")};
-  font-size: ${props => (props.large ? "18px" : "14px")};
+  font-size: ${props => (props.large ? "14px" : "14px")};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -240,7 +235,7 @@ export const Button = styled.button`
     align-items: center;
     justify-content: center;
     path {
-      fill: var(--c-icon-l);
+      fill: ${props => (props.cta ? "white" : "var(--c-icon-l)")};
     }
   }
 

@@ -21,7 +21,6 @@ const Meta = ({
   cookingTime,
 }) => {
   const [loading, setLoading] = useState(false)
-  const [imageUrl, setImageUrl] = useState()
   const user = store.get("user")
 
   const firebase = getFirebase()
