@@ -295,8 +295,6 @@ const IngredientList = styled.ul`
 
   list-style: none;
 
-  .actions {
-  }
   & > form {
     &:first-of-type {
       padding-top: 0px;
@@ -312,6 +310,13 @@ const IngredientList = styled.ul`
     padding: 20px;
     margin-bottom: 0px;
     border-top: 1px dotted var(--c-border);
+    .actions {
+      svg {
+        path {
+          fill: var(--c-icon-l);
+        }
+      }
+    }
 
     &.hide {
       display: none;

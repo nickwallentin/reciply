@@ -118,7 +118,13 @@ const CreateRecipePage = () => {
           </Wrap>
           <Wrap>
             {" "}
-            <Button style={{ marginTop: "15px" }} full large cta>
+            <Button
+              onClick={e => handleCreateRecipe(e)}
+              style={{ marginTop: "15px" }}
+              full
+              large
+              cta
+            >
               <AddIcon />
               Create recipe
             </Button>
