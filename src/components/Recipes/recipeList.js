@@ -46,7 +46,7 @@ const query = graphql`
             amountType
             ingredient
           }
-          instructions
+          steps
           suitability
           user {
             displayName

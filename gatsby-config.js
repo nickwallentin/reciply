@@ -65,7 +65,7 @@ module.exports = {
               likes: doc.likes,
               likedBy___NODE: doc.likedBy.map(user => user.id),
               ingredients: doc.ingredients,
-              instructions: doc.instructions,
+              steps: doc.steps,
               measurementOrigin: doc.measurementOrigin,
               servings: doc.servings,
               suitability: doc.suitability,

@@ -264,7 +264,7 @@ export const pageQuery = graphql`
         amountType
         ingredient
       }
-      instructions
+      steps
       suitability
       cookingTime
       servings
