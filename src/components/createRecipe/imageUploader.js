@@ -41,7 +41,6 @@ const ImageUploader = ({
     try {
       const croppedImage = await getCroppedImg(preview, croppedAreaPixels)
       console.log("done", { croppedImage })
-
       setCroppedImage(croppedImage)
       var xhr = new XMLHttpRequest()
       xhr.open("GET", croppedImage, true)

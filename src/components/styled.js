@@ -158,6 +158,7 @@ export const Card = styled.div`
     }
     small {
       color: var(--c-txt-soft);
+      line-height: 1rem;
     }
   }
   .card-content {

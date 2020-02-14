@@ -68,6 +68,7 @@ const SuitabilityList = styled.div`
     text-transform: capitalize;
     margin: 0px;
     border-top: 1px solid var(--c-bg);
+    cursor: pointer;
 
     &.checked {
       background: var(--c-pri-soft);
