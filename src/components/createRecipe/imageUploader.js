@@ -21,7 +21,6 @@ const ImageUploader = ({
   const [file, setFile] = useState("")
   const [preview, setPreview] = useState("")
   const [croppedImage, setCroppedImage] = useState(null)
-
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
@@ -112,7 +111,7 @@ const ImageUploader = ({
                 placeholder="Enter Recipe Name"
                 style={{ marginBottom: "5px" }}
                 autoFocus
-                onChange={e => setName(e.target.value)}
+                onChange={e => setFile(e.target.value)}
               />
             </div>
             <div>

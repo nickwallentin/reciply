@@ -69,14 +69,13 @@ const SuitabilityList = styled.div`
     margin: 0px;
     border-top: 1px solid var(--c-bg);
     cursor: pointer;
+    &:first-of-type {
+      border-top: 0px;
+    }
 
     &.checked {
       background: var(--c-pri-soft);
       color: var(--c-pri);
-
-      &:first-of-type {
-        border-top: 0px;
-      }
 
       svg {
         path {
